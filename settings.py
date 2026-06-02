@@ -1,0 +1,8 @@
+# rozmiar komorki = (WINDOW_SIZE/GRID_SIZE) px
+# liczba komórek = GRID_SIZE^2
+WINDOW_SIZE = 500
+GRID_SIZE = 250
+
+COLOR_WHITE = (255, 255, 255)
+COLOR_BLACK = (0, 0, 0)
+COLOR_RED = (255, 0, 0)
