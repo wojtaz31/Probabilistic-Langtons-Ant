@@ -13,3 +13,12 @@ class Rule:
 
     def add_next_color(self, next_color: tuple, probability: float):
         self.next_colors.append((next_color, probability))
+
+    def is_valid(self) -> bool:
+        if not self.actions or not self.next_colors:
+            return False
+
+        action_prob_sum = sum(prob for _, prob in self.actions)
+        color_prob_sum = sum(prob for _, prob in self.next_colors)
+
+        return abs(action_prob_sum - 1.0) < 1e-6 and abs(color_prob_sum - 1.0) < 1e-6
