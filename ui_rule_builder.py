@@ -19,14 +19,12 @@ class UIRuleBuilderWindow:
     def __init__(self, manager: pygame_gui.UIManager, position: tuple = (50, 50)):
         self.manager = manager
 
-        # Główne okno
         self.window = UIWindow(
             rect=pygame.Rect(position, (450, 700)),
             manager=self.manager,
             window_display_title="Kreator Reguły (Stochastic Rule)"
         )
 
-        # Zmienne stanu formularza
         self.known_colors = []
         self.rule_colors = []
         self.current_base_color = None
@@ -34,11 +32,9 @@ class UIRuleBuilderWindow:
         self.staged_actions = []
         self.staged_colors = []
 
-        # Zmienne dla okien dialogowych
         self.color_picker = None
         self.picker_target_mode = ""
 
-        # Callback-funkcja, która zostanie wywołana po udanym stworzeniu reguły
         self.on_rule_created = None
 
         self._build_ui()
@@ -47,7 +43,6 @@ class UIRuleBuilderWindow:
         """Inicjalizuje wszystkie widgety w oknie."""
         y_offset = 10
 
-        # --- 1. Kolor Bazowy ---
         UILabel(relative_rect=pygame.Rect((10, y_offset), (400, 25)), text="--- 1. KOLOR BAZOWY REGUŁY ---",
                 manager=self.manager, container=self.window)
         y_offset += 30
@@ -58,7 +53,6 @@ class UIRuleBuilderWindow:
         )
         y_offset += 40
 
-        # --- 2. Akcje ---
         UILabel(relative_rect=pygame.Rect((10, y_offset), (400, 25)),
                 text="--- 2. MOŻLIWE KIERUNKI (Suma Prawd. = 1.0) ---", manager=self.manager, container=self.window)
         y_offset += 30
@@ -77,7 +71,6 @@ class UIRuleBuilderWindow:
                                              container=self.window)
         y_offset += 70
 
-        # --- 3. Nowe Kolory ---
         UILabel(relative_rect=pygame.Rect((10, y_offset), (400, 25)),
                 text="--- 3. MOŻLIWE NOWE KOLORY (Suma Prawd. = 1.0) ---", manager=self.manager, container=self.window)
         y_offset += 30
@@ -97,7 +90,6 @@ class UIRuleBuilderWindow:
                                             container=self.window)
         y_offset += 90
 
-        # --- 4. Zapis ---
         self.btn_save_rule = UIButton(relative_rect=pygame.Rect((10, y_offset), (410, 50)),
                                       text="ZAPISZ I WALIDUJ REGUŁĘ", manager=self.manager, container=self.window)
 
@@ -121,7 +113,6 @@ class UIRuleBuilderWindow:
     def process_event(self, event):
         """Zewnętrzna metoda, do której przekazujemy eventy z głównej pętli."""
 
-        # --- Zmiana na listach rozwijanych ---
         if event.type == pygame_gui.UI_DROP_DOWN_MENU_CHANGED:
             selected_val = event.text
             if isinstance(selected_val, tuple): selected_val = selected_val[0]
@@ -145,7 +136,6 @@ class UIRuleBuilderWindow:
                     else:
                         self.current_temp_target_color = parse_color(selected_val)
 
-        # --- Kliknięcia przycisków ---
         elif event.type == pygame_gui.UI_BUTTON_PRESSED:
             if event.ui_element == self.btn_add_action:
                 try:
@@ -199,13 +189,11 @@ class UIRuleBuilderWindow:
                     self.text_staged_actions.set_text("<i>Brak dodanych akcji...</i>")
                     self.text_staged_colors.set_text("<i>Brak dodanych kolorów...</i>")
 
-                    # WYSYŁANIE GOTOWEJ REGUŁY NA ZEWNĄTRZ KLASY!
                     if self.on_rule_created:
                         self.on_rule_created(new_rule)
                 else:
                     print("BŁĄD ZAPISU: Suma prawdopodobieństw akcji LUB kolorów nie wynosi 1.0!")
 
-        # --- Wybór koloru z palety ---
         elif event.type == pygame_gui.UI_COLOUR_PICKER_COLOUR_PICKED:
             rgb_tuple = (event.colour.r, event.colour.g, event.colour.b)
             if rgb_tuple not in self.known_colors:
