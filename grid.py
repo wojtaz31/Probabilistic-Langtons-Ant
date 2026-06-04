@@ -26,7 +26,9 @@ class Grid:
     def step(self):
         for ant in self.ants:
             if 0 <= ant.x < self.size and 0 <= ant.y < self.size:
-                current_color = tuple(self.board[ant.x, ant.y])
+
+                raw_color = self.board[ant.x, ant.y]
+                current_color = (int(raw_color[0]), int(raw_color[1]), int(raw_color[2]))
 
                 if current_color in self.rules:
                     rule = self.rules[current_color]

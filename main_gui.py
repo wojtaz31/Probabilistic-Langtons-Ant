@@ -4,10 +4,9 @@ import sys
 
 from ui_rule_builder import UIRuleBuilderWindow
 from ui_main_panel import UIMainPanel
-from settings import WINDOW_WIDTH, WINDOW_HEIGHT, GRID_SIZE, COLOR_RED, UPDATE_DELAY_MS
+from settings import WINDOW_WIDTH, WINDOW_HEIGHT, GRID_SIZE, UPDATE_DELAY_MS
 from grid import Grid
 from ant import Ant
-
 
 def main():
     pygame.init()
@@ -17,12 +16,6 @@ def main():
 
     manager = pygame_gui.UIManager(window_size)
     grid = Grid(GRID_SIZE)
-
-    center_x, center_y = GRID_SIZE // 2, GRID_SIZE // 2
-    grid.color_pixel(center_x, center_y)
-    grid.color_pixel(center_x + 1, center_y)
-    grid.color_pixel(center_x, center_y + 1)
-    grid.color_pixel(center_x + 1, center_y + 1, COLOR_RED)
 
     main_panel = UIMainPanel(manager, position=(20, 20))
     rule_builder_window = None
