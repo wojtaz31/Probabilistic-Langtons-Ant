@@ -6,7 +6,7 @@ import argparse
 from ui_rule_builder import UIRuleBuilderWindow
 from ui_main_panel import UIMainPanel
 from gui_utils import load_config
-from settings import WINDOW_WIDTH, WINDOW_HEIGHT, GRID_SIZE, UPDATE_DELAY_MS
+from settings import WINDOW_WIDTH, WINDOW_HEIGHT, GRID_SIZE
 from grid import Grid
 from ant import Ant
 
@@ -27,7 +27,6 @@ def main():
     simulation_running = False
 
     if args.ruleset:
-        print(f"--- Wczytywanie konfiguracji z: {args.ruleset} ---")
         load_config(args.ruleset, grid)
         simulation_running = True
 
@@ -40,21 +39,17 @@ def main():
     def handle_new_ant(x, y, direction):
         new_ant = Ant(x, y, direction)
         grid.add_ant(new_ant)
-        print(f"[MAIN] Dodano Mrówkę. Aktualna liczba mrówek: {len(grid.ants)}")
 
     def handle_new_rule(rule):
         grid.add_rule(rule)
-        print(f"[MAIN] Zapisano regułę. Aktualna liczba reguł: {len(grid.rules)}")
 
     def toggle_simulation():
         nonlocal simulation_running
         simulation_running = not simulation_running
         if simulation_running:
             main_panel.btn_toggle_sim.set_text("PAUSE SIMULATION")
-            print("[MAIN] Symulacja URUCHOMIONA.")
         else:
             main_panel.btn_toggle_sim.set_text("START SIMULATION")
-            print("[MAIN] Symulacja ZATRZYMANA.")
 
     main_panel.on_ant_created = handle_new_ant
     main_panel.on_toggle_simulation = toggle_simulation
@@ -88,13 +83,21 @@ def main():
 
         try:
             current_delay = int(main_panel.input_speed.get_text())
-            if current_delay < 1:
-                current_delay = 1
+            if current_delay < 0:
+                current_delay = 0
         except ValueError:
-            current_delay = UPDATE_DELAY_MS
+            current_delay = 0
+
+        try:
+            steps_per_frame = int(main_panel.input_steps.get_text())
+            if steps_per_frame < 1:
+                steps_per_frame = 1
+        except ValueError:
+            steps_per_frame = 1
 
         if simulation_running and (current_time - last_update_time >= current_delay):
-            grid.step()
+            for _ in range(steps_per_frame):
+                grid.step()
             last_update_time = current_time
 
         manager.update(time_delta)
@@ -109,6 +112,7 @@ def main():
 
     pygame.quit()
     sys.exit()
+
 
 if __name__ == "__main__":
     main()

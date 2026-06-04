@@ -3,6 +3,7 @@ import pygame_gui
 from pygame_gui.elements import UIWindow, UIButton, UILabel, UIDropDownMenu, UITextEntryLine
 from settings import GRID_SIZE
 
+
 class UIMainPanel:
     def __init__(self, manager: pygame_gui.UIManager, position: tuple = (20, 20)):
         self.manager = manager
@@ -18,23 +19,40 @@ class UIMainPanel:
 
     def _build_ui(self):
         y_offset = 10
-        UILabel(relative_rect=pygame.Rect((10, y_offset), (300, 25)), text="--- PRĘDKOŚĆ SYMULACJI ---", manager=self.manager, container=self.window)
+        UILabel(relative_rect=pygame.Rect((10, y_offset), (300, 25)), text="--- PRĘDKOŚĆ SYMULACJI ---",
+                manager=self.manager, container=self.window)
         y_offset += 35
-        UILabel(relative_rect=pygame.Rect((10, y_offset), (140, 30)), text="Opóźnienie (ms):", manager=self.manager, container=self.window)
-        self.input_speed = UITextEntryLine(relative_rect=pygame.Rect((160, y_offset), (100, 30)), manager=self.manager, container=self.window)
-        self.input_speed.set_text("100")
+
+        UILabel(relative_rect=pygame.Rect((10, y_offset), (120, 30)), text="Opóźnienie (ms):", manager=self.manager,
+                container=self.window)
+        self.input_speed = UITextEntryLine(relative_rect=pygame.Rect((130, y_offset), (60, 30)), manager=self.manager,
+                                           container=self.window)
+        self.input_speed.set_text("0")
+
+        UILabel(relative_rect=pygame.Rect((200, y_offset), (50, 30)), text="Kroki:", manager=self.manager,
+                container=self.window)
+        self.input_steps = UITextEntryLine(relative_rect=pygame.Rect((250, y_offset), (60, 30)), manager=self.manager,
+                                           container=self.window)
+        self.input_steps.set_text("5")
+
         y_offset += 50
-        UILabel(relative_rect=pygame.Rect((10, y_offset), (300, 25)), text="--- NOWA MRÓWKA ---", manager=self.manager, container=self.window)
+        UILabel(relative_rect=pygame.Rect((10, y_offset), (300, 25)), text="--- NOWA MRÓWKA ---", manager=self.manager,
+                container=self.window)
         y_offset += 35
-        UILabel(relative_rect=pygame.Rect((10, y_offset), (40, 30)), text="X:", manager=self.manager, container=self.window)
-        self.input_x = UITextEntryLine(relative_rect=pygame.Rect((50, y_offset), (80, 30)), manager=self.manager, container=self.window)
-        UILabel(relative_rect=pygame.Rect((140, y_offset), (40, 30)), text="Y:", manager=self.manager, container=self.window)
-        self.input_y = UITextEntryLine(relative_rect=pygame.Rect((180, y_offset), (80, 30)), manager=self.manager, container=self.window)
+        UILabel(relative_rect=pygame.Rect((10, y_offset), (40, 30)), text="X:", manager=self.manager,
+                container=self.window)
+        self.input_x = UITextEntryLine(relative_rect=pygame.Rect((50, y_offset), (80, 30)), manager=self.manager,
+                                       container=self.window)
+        UILabel(relative_rect=pygame.Rect((140, y_offset), (40, 30)), text="Y:", manager=self.manager,
+                container=self.window)
+        self.input_y = UITextEntryLine(relative_rect=pygame.Rect((180, y_offset), (80, 30)), manager=self.manager,
+                                       container=self.window)
         center_val = str(GRID_SIZE // 2)
         self.input_x.set_text(center_val)
         self.input_y.set_text(center_val)
         y_offset += 40
-        UILabel(relative_rect=pygame.Rect((10, y_offset), (100, 30)), text="Kierunek:", manager=self.manager, container=self.window)
+        UILabel(relative_rect=pygame.Rect((10, y_offset), (100, 30)), text="Kierunek:", manager=self.manager,
+                container=self.window)
         self.dropdown_dir = UIDropDownMenu(
             options_list=["UP", "RIGHT", "DOWN", "LEFT"],
             starting_option="UP",
@@ -42,13 +60,18 @@ class UIMainPanel:
             manager=self.manager, container=self.window
         )
         y_offset += 40
-        self.btn_add_ant = UIButton(relative_rect=pygame.Rect((10, y_offset), (280, 40)), text="Dodaj Mrówkę na planszę", manager=self.manager, container=self.window)
+        self.btn_add_ant = UIButton(relative_rect=pygame.Rect((10, y_offset), (280, 40)),
+                                    text="Dodaj Mrówkę na planszę", manager=self.manager, container=self.window)
         y_offset += 60
-        UILabel(relative_rect=pygame.Rect((10, y_offset), (300, 25)), text="--- ZARZĄDZANIE REGUŁAMI ---", manager=self.manager, container=self.window)
+        UILabel(relative_rect=pygame.Rect((10, y_offset), (300, 25)), text="--- ZARZĄDZANIE REGUŁAMI ---",
+                manager=self.manager, container=self.window)
         y_offset += 35
-        self.btn_open_rule_builder = UIButton(relative_rect=pygame.Rect((10, y_offset), (280, 40)), text="[+] Otwórz Kreator Reguł", manager=self.manager, container=self.window)
+        self.btn_open_rule_builder = UIButton(relative_rect=pygame.Rect((10, y_offset), (280, 40)),
+                                              text="[+] Otwórz Kreator Reguł", manager=self.manager,
+                                              container=self.window)
         y_offset += 60
-        self.btn_toggle_sim = UIButton(relative_rect=pygame.Rect((10, y_offset), (280, 50)), text="START SIMULATION", manager=self.manager, container=self.window)
+        self.btn_toggle_sim = UIButton(relative_rect=pygame.Rect((10, y_offset), (280, 50)), text="START SIMULATION",
+                                       manager=self.manager, container=self.window)
 
     def process_event(self, event):
         if event.type == pygame_gui.UI_BUTTON_PRESSED:
