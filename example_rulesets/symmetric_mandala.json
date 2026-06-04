@@ -1,0 +1,31 @@
+{
+  "ants": [
+    {
+      "x": 75,
+      "y": 75,
+      "direction": "UP"
+    }
+  ],
+  "rules": [
+    {
+      "base_color": [255, 255, 255],
+      "actions": [["LEFT", 1.0]],
+      "next_colors": [[[0, 255, 255], 1.0]]
+    },
+    {
+      "base_color": [0, 255, 255],
+      "actions": [["RIGHT", 1.0]],
+      "next_colors": [[[255, 0, 255], 1.0]]
+    },
+    {
+      "base_color": [255, 0, 255],
+      "actions": [["RIGHT", 1.0]],
+      "next_colors": [[[255, 255, 0], 1.0]]
+    },
+    {
+      "base_color": [255, 255, 0],
+      "actions": [["LEFT", 1.0]],
+      "next_colors": [[[255, 255, 255], 1.0]]
+    }
+  ]
+}
