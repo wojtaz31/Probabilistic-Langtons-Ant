@@ -17,7 +17,7 @@ uv sync
 ### Option 2: Using `pip` (Traditional)
 
 ```bash
-git clone [https://github.com/yourusername/stochastic-langtons-ant.git](https://github.com/yourusername/stochastic-langtons-ant.git)
+git clone https://github.com/wojtaz31/Probabilistic-Langtons-Ant.git
 cd stochastic-langtons-ant
 
 python -m venv .venv
