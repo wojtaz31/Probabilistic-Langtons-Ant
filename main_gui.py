@@ -4,7 +4,7 @@ import sys
 
 from ui_rule_builder import UIRuleBuilderWindow
 from ui_main_panel import UIMainPanel
-from settings import WINDOW_WIDTH, WINDOW_HEIGHT, GRID_SIZE, COLOR_RED
+from settings import WINDOW_WIDTH, WINDOW_HEIGHT, GRID_SIZE, COLOR_RED, UPDATE_DELAY_MS
 from grid import Grid
 from ant import Ant
 
@@ -27,6 +27,8 @@ def main():
     main_panel = UIMainPanel(manager, position=(20, 20))
     rule_builder_window = None
 
+    simulation_running = False
+
     def handle_new_ant(x, y, direction):
         new_ant = Ant(x, y, direction)
         grid.add_ant(new_ant)
@@ -36,7 +38,18 @@ def main():
         grid.add_rule(rule)
         print(f"[MAIN] Zapisano regułę. Aktualna liczba reguł: {len(grid.rules)}")
 
+    def toggle_simulation():
+        nonlocal simulation_running
+        simulation_running = not simulation_running
+        if simulation_running:
+            main_panel.btn_toggle_sim.set_text("PAUSE SIMULATION")
+            print("[MAIN] Symulacja URUCHOMIONA.")
+        else:
+            main_panel.btn_toggle_sim.set_text("START SIMULATION")
+            print("[MAIN] Symulacja ZATRZYMANA.")
+
     main_panel.on_ant_created = handle_new_ant
+    main_panel.on_toggle_simulation = toggle_simulation
 
     def open_rule_builder():
         nonlocal rule_builder_window
@@ -49,8 +62,11 @@ def main():
     clock = pygame.time.Clock()
     running = True
 
+    last_update_time = pygame.time.get_ticks()
+
     while running:
         time_delta = clock.tick(60) / 1000.0
+        current_time = pygame.time.get_ticks()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -61,6 +77,10 @@ def main():
 
             if rule_builder_window is not None and rule_builder_window.window.alive():
                 rule_builder_window.process_event(event)
+
+        if simulation_running and (current_time - last_update_time >= UPDATE_DELAY_MS):
+            grid.step()
+            last_update_time = current_time
 
         manager.update(time_delta)
 
