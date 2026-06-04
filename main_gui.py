@@ -1,14 +1,21 @@
 import pygame
 import pygame_gui
 import sys
+import argparse
 
 from ui_rule_builder import UIRuleBuilderWindow
 from ui_main_panel import UIMainPanel
+from gui_utils import load_config
 from settings import WINDOW_WIDTH, WINDOW_HEIGHT, GRID_SIZE, UPDATE_DELAY_MS
 from grid import Grid
 from ant import Ant
 
+
 def main():
+    parser = argparse.ArgumentParser(description="Stochastyczna Mrówka Langtona")
+    parser.add_argument("--ruleset", type=str, help="Ścieżka do pliku konfiguracyjnego JSON", default=None)
+    args = parser.parse_args()
+
     pygame.init()
     window_size = (WINDOW_WIDTH, WINDOW_HEIGHT)
     screen = pygame.display.set_mode(window_size)
@@ -17,10 +24,18 @@ def main():
     manager = pygame_gui.UIManager(window_size)
     grid = Grid(GRID_SIZE)
 
+    simulation_running = False
+
+    if args.ruleset:
+        print(f"--- Wczytywanie konfiguracji z: {args.ruleset} ---")
+        load_config(args.ruleset, grid)
+        simulation_running = True
+
     main_panel = UIMainPanel(manager, position=(20, 20))
     rule_builder_window = None
 
-    simulation_running = False
+    if simulation_running:
+        main_panel.btn_toggle_sim.set_text("PAUSE SIMULATION")
 
     def handle_new_ant(x, y, direction):
         new_ant = Ant(x, y, direction)
