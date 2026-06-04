@@ -71,7 +71,14 @@ def main():
             if rule_builder_window is not None and rule_builder_window.window.alive():
                 rule_builder_window.process_event(event)
 
-        if simulation_running and (current_time - last_update_time >= UPDATE_DELAY_MS):
+        try:
+            current_delay = int(main_panel.input_speed.get_text())
+            if current_delay < 1:
+                current_delay = 1
+        except ValueError:
+            current_delay = UPDATE_DELAY_MS
+
+        if simulation_running and (current_time - last_update_time >= current_delay):
             grid.step()
             last_update_time = current_time
 
@@ -87,7 +94,6 @@ def main():
 
     pygame.quit()
     sys.exit()
-
 
 if __name__ == "__main__":
     main()
