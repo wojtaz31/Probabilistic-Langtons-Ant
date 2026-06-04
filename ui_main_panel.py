@@ -32,8 +32,8 @@ class UIMainPanel:
         UILabel(relative_rect=pygame.Rect((10, y_offset), (100, 30)), text="Kierunek:", manager=self.manager,
                 container=self.window)
         self.dropdown_dir = UIDropDownMenu(
-            options_list=["Góra", "Prawo", "Dół", "Lewo"],
-            starting_option="Góra",
+            options_list=["UP", "RIGHT", "DOWN", "LEFT"],
+            starting_option="UP",
             relative_rect=pygame.Rect((120, y_offset), (160, 30)),
             manager=self.manager, container=self.window
         )
