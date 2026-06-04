@@ -1,4 +1,5 @@
 import numpy as np
+import random
 from settings import COLOR_WHITE, COLOR_BLACK
 
 
@@ -21,3 +22,25 @@ class Grid:
 
     def get_surface_array(self) -> np.ndarray:
         return self.board
+
+    def step(self):
+        for ant in self.ants:
+            if 0 <= ant.x < self.size and 0 <= ant.y < self.size:
+                current_color = tuple(self.board[ant.x, ant.y])
+
+                if current_color in self.rules:
+                    rule = self.rules[current_color]
+
+                    actions = [a[0] for a in rule.actions]
+                    action_probs = [a[1] for a in rule.actions]
+                    chosen_action = random.choices(actions, weights=action_probs, k=1)[0]
+
+                    colors = [c[0] for c in rule.next_colors]
+                    color_probs = [c[1] for c in rule.next_colors]
+                    chosen_color = random.choices(colors, weights=color_probs, k=1)[0]
+
+                    self.board[ant.x, ant.y] = chosen_color
+
+                    ant.rotate(chosen_action)
+
+            ant.move()
